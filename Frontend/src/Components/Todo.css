@@ -1,0 +1,99 @@
+.todo {
+  width: 75%;
+  height: 2rem;
+  margin: 0.5rem;
+  padding-left: 13px;
+  position: relative;
+  left: 15%;
+  background: white;
+  font-size: 1rem;
+  color: black;
+  display: flex;
+  align-items: center;
+  transition: all 1s ease;
+}
+.todo-itemOpen {
+  color: rgb(12, 12, 12);
+  position: relative;
+  right: 0%;
+}
+.todo-itemClosed {
+  color: rgb(12, 12, 12);
+  position: relative;
+  right: 0%;
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.todo li {
+  flex: 2px;
+  list-style-type: none;
+}
+.status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  left: 1%;
+}
+.status-btn {
+  background: #ff8001;
+  color: rgb(255, 255, 255);
+  border: none;
+  cursor: pointer;
+  font-size: 1.35rem;
+}
+.edit {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  right: 1%;
+}
+.edit-btn {
+  background: #ff582a;
+  color: rgb(255, 255, 255);
+  border: none;
+  cursor: pointer;
+  font-size: 1.35rem;
+}
+.delete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  left: 1.033%;
+}
+.trash-btn {
+  background: rgb(236, 82, 35);
+}
+.progress {
+  background-color: rgb(27, 26, 25);
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  width: 100px;
+  height: 190px;
+}
+.fa-trash,
+.fa-check {
+  pointer-events: none;
+}
+.changeProgress {
+  background-color: rgb(255, 254, 254);
+  color: #ff582a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  left: 1.1%;
+  width: 90px;
+  height: 32px;
+  font-size: small;
+  margin: 10px;
+  border: rgb(194, 180, 180);
+}
