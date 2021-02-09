@@ -21,7 +21,7 @@ console.log(props.task)
 return (
     <div>
       
-      <Router>
+      <Router basename="/protask">
         <Switch>
           <Route path="/protask/:username" component={Task}/>
           <Route path="/login"><AppLog/></Route>
