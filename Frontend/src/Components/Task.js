@@ -108,12 +108,12 @@ class Task extends React.Component{
             return <AssignTodo Task={element.Task} username={this.state.username} status={element.status} progress={element.progress} set={this.setTodos}/>
         })
         
-        const data=[
-          {label: 'Simran', value:1},
-          {label: 'Virendra', value:2},
-          {label: 'Arvind', value:3},
-          {label:'Ayush', value:4}
-      ]
+       // const data=[
+       //   {label: 'Simran', value:1},
+       //   {label: 'Virendra', value:2},
+       //   {label: 'Arvind', value:3},
+       //   {label:'Ayush', value:4}
+      //]
         return(
             <div className="Task">
               <header>
