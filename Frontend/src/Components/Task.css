@@ -5,3 +5,6 @@ header {
   justify-content: center !important;
   align-items: center;
 }
+h1 {
+  font-size: 4rem;
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import './App.css';
-import Form from "./Components/Form";//importing components
+//import Form from "./Components/Form";//importing components
 import TodoList from "./Components/TodoList"; //importing components
 import {
   BrowserRouter as Router,
@@ -8,9 +8,11 @@ import {
   Link,
   Switch,
 } from "react-router-dom";
-import AppSign from './Components/Signup/AppSign';
+//import AppSign from './Components/Signup/AppSign';
+import Form from './Components/Signup/FormSign';
+import Formlog from './Components/Signup/Formlog';
 import Formlogin from "./Components/Signup/Formlogin";
-import AppLog from "./Components/Signup/AppLog";
+//import AppLog from "./Components/Signup/AppLog";
 import Task from "./Components/Task";
 import { createBootstrapComponent } from "react-bootstrap/esm/ThemeProvider";
 import {connect} from 'react-redux';
@@ -24,8 +26,8 @@ return (
       <Router basename="/protask">
         <Switch>
           <Route path="/protask/:username" component={Task}/>
-          <Route path="/login"><AppLog/></Route>
-          <Route path="/"><AppSign/></Route>
+          <Route path="/login"><Formlog/></Route>
+          <Route path="/"><Form/></Route>
         </Switch>
       </Router>
       
@@ -42,6 +44,5 @@ const mapStateToProps= state=>{
   }
 }
 const mapDispatchToProps=dispatch=>{
-
 }
 export default connect(mapStateToProps)(App);
