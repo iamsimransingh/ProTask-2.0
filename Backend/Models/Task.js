@@ -11,5 +11,4 @@ var task=mongoose.Schema({
     progress:{type:Number,default:0}
 });
 
-
 module.exports=task;

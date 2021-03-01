@@ -6,7 +6,7 @@ var user=require('../Models/User');
 
 router.get('/getAllUsers',(req,res)=>{
 
-    var Users=user.find({}).then((result)=>{
+    user.find({}).then((result)=>{
         let c=1;
         console.log(result)
         var listOfUser=result.map((u)=>{
@@ -26,6 +26,7 @@ router.get('/getAllUsers',(req,res)=>{
 router.put('/addMyTask',(req,res)=>{
       var User=user.findOne({username:req.body.username}).then((result)=>{
       console.log(result)  
+      if(result){
       let t={
           Task:req.body.task,
           status:"Open",
@@ -37,11 +38,15 @@ router.put('/addMyTask',(req,res)=>{
       result.save().then((resul)=>{
         res.send(resul);
        }).catch((err)=>{
-        res.send(err);
+        res.send({message:"Error occured",error:err});
        })
+    }else{
+        res.status(400).send({message:"Couldn't find user"});
+    }
     }).catch((err)=>{
         res.send(err);
     })
+
 });
 
 router.put('/deletemyTask',(req,res)=>{
@@ -85,7 +90,7 @@ router.put('/closeTask',(req,res)=>{
                    {
                    let i=rr.assignedTask.findIndex(e=>e.Task===req.body.task)
                    rr.assignedTask[i].status="Closed"
-                   rr.save().then((rrr)=>{
+                   rr.save().then(()=>{
                        user.findOne({username:req.body.username}).then((Result)=>{
                            res.send(Result)
                        }).catch((err)=>{
@@ -148,7 +153,7 @@ router.put('/updateTask',(req,res)=>{
         let User=UpdateAssignedBy();
         User.then((result)=>{
             user.find({"myTask.Task":req.body.Task}).then((result)=>{
-                 if(result){
+                 if(result){ 
                  result.forEach(e=>list.push(saveTask(e)))
                  Promise.all(list).then((result)=>{
                      res.send(result)
@@ -166,6 +171,38 @@ router.put('/updateTask',(req,res)=>{
 router.put('/deleteTask',(req,res)=>{
     var list=[]
     var deleteuser=[]
+    user.find({"myTask.Task":req.body.task}).then((result)=>{
+        
+        result.forEach(u=>list.push(deleteUser(u)))
+ })
+ Promise.all(list).then((rr)=>{
+    console.log(rr);
+    user.findOne({"assignedTask.Task":req.body.task}).then((r)=>{
+        if(r){
+           let arr= r.assignedTask.filter(element=>element.Task!==req.body.task)
+           r.assignedTask=arr
+            r.save().then((resul)=>{
+                console.log(resul)
+                user.findOne({username:req.body.username}).then((rrr)=>{
+                    res.send(rrr)
+                }).catch((err)=>{
+                    res.send(err);
+                })
+            })
+        }
+        else{
+            user.findOne({username:req.body.username}).then((rrr)=>{
+                res.send(rrr)
+            }).catch((err)=>{
+                res.send(err);
+            })
+        }
+    }).catch((err)=>{
+        res.send(err)
+    })
+}).catch((err)=>{
+    res.send(err);
+})
     function deleteUser(User){
         return new Promise((resolve,reject)=>{
            let arr= User.myTask.filter(e=>e.Task!==req.body.task)
@@ -174,45 +211,17 @@ router.put('/deleteTask',(req,res)=>{
             User.save().then((r)=>{
                 console.log(r)
                 resolve(r)
+            }).catch((err)=>{
+                reject(err);
             })
         })
     }
    
     
 
-    user.find({"myTask.Task":req.body.task}).then((result)=>{
-        
-           result.forEach(u=>list.push(deleteUser(u)))
-    })
+
     
-        Promise.all(list).then((rr)=>{
-            console.log(rr);
-            user.findOne({"assignedTask.Task":req.body.task}).then((r)=>{
-                if(r){
-                   let arr= r.assignedTask.filter(element=>element.Task!==req.body.task)
-                   r.assignedTask=arr
-                    r.save().then((resul)=>{
-                        console.log(resul)
-                        user.findOne({username:req.body.username}).then((rrr)=>{
-                            res.send(rrr)
-                        }).catch((err)=>{
-                            res.send(err);
-                        })
-                    })
-                }
-                else{
-                    user.findOne({username:req.body.username}).then((rrr)=>{
-                        res.send(rrr)
-                    }).catch((err)=>{
-                        res.send(err);
-                    })
-                }
-            }).catch((err)=>{
-                res.send(err)
-            })
-        }).catch((err)=>{
-            res.send(err);
-        })
+
     
 })
 
@@ -220,6 +229,37 @@ router.post('/delegateTask',(req,res)=>{
       var list=[];
       var updatedUsers=[];
       
+
+      req.body.listOfUser.forEach((u)=>{
+        list.push(SearchUser(u));
+     })
+
+     Promise.all(list).then((result)=>{
+           
+        result.forEach(u=>{
+            updatedUsers.push(UpdateUsers(u))
+        }) 
+        }).then(()=>{
+    
+                     Promise.all(updatedUsers).then((resu)=>{
+                         user.findOne({username:req.body.username}).then((result)=>{
+                             var assignTask={
+                                 Task:req.body.Task,
+                                 progress:0,
+                                 status:"Open"
+                             }
+                             result.assignedTask.push(assignTask);
+                              result.save().then((rr)=>{
+                                  res.send(rr)
+                     }).catch((err)=>{
+                         res.send(err);
+                     })
+                    
+                })
+            
+        })
+     })
+
       function SearchUser(User){
           return new Promise((resolve,reject)=>{
               user.findOne({username:User.username}).then((result)=>{
@@ -233,9 +273,7 @@ router.post('/delegateTask',(req,res)=>{
 
       }
 
-      req.body.listOfUser.forEach((u)=>{
-         list.push(SearchUser(u));
-      })
+
 
       function createTask(User){
         
@@ -263,7 +301,7 @@ router.post('/delegateTask',(req,res)=>{
                 
                 User.save().then((result)=>{
                     console.log(result);
-                  resolve(result)  
+                  resolve(result) 
                 })
               })
               
@@ -271,35 +309,18 @@ router.post('/delegateTask',(req,res)=>{
           })
       }
 
-      Promise.all(list).then((result)=>{
-           
-           result.forEach(u=>{
-               updatedUsers.push(UpdateUsers(u))
-           }) 
-           }).then(()=>{
-               
-                   
-                    
-                        Promise.all(updatedUsers).then((resu)=>{
-                            user.findOne({username:req.body.username}).then((result)=>{
-                                var assignTask={
-                                    Task:req.body.Task,
-                                    progress:0,
-                                    status:"Open"
-                                }
-                                result.assignedTask.push(assignTask);
-                                 result.save().then((rr)=>{
-                                     res.send(rr)
-                        }).catch((err)=>{
-                            res.send(err);
-                        })
-                       
-                   })
-               
-           })
-        })
+     
            
       
 })
 
 module.exports=router;
+
+/*
+  We have result list=[];
+  for(i=0;i<result.size;i++)
+  {
+      let promise=saveTask(result[i]);
+      list.push(promise);
+  }
+*/

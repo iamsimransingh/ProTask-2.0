@@ -7,11 +7,10 @@ var userRoutes=require('./routes/user');
 var taskRoutes=require('./routes/task');
 
 const app=express();
-const port=5000;
 
 app.use(cors());
 
-var router=express.Router({ mergeParams: true });
+express.Router({ mergeParams: true });
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:false}));
 

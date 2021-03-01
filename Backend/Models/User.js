@@ -4,7 +4,7 @@ const validator=require('validator');
 var task=require('./Task');
 
 var Schema=mongoose.Schema;
-var schema=new Schema({
+var schema=new Schema({//object for Schema class
     email:{type:String,required:true,validate:validator.isEmail},
     password:{type:String,required:true},
     username:{type:String,required:true},

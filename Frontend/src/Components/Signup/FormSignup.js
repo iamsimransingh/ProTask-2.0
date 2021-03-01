@@ -34,6 +34,14 @@ class SignUp extends React.Component{
     
     render(){
         return(
+          <div className='form-container'>
+          <span className='close-btn'>×</span>
+          <div className='form-content-left'>
+          <header>
+    <h1>ProTask</h1>
+        </header>
+        <img className='form-img' src='img/img-2.png' alt='protasklogo' />
+          </div>
             <div className='form-content-right' >
         <div className='form' >
         <h1>
@@ -97,6 +105,7 @@ class SignUp extends React.Component{
           Already have an account? <Link to="/login"><button className="login-btn" >Login here</button></Link>
         </span>
         </div>
+    </div>
     </div>
         )
     }

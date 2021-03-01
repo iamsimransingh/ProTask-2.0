@@ -8,11 +8,8 @@ import {
   Link,
   Switch,
 } from "react-router-dom";
-//import AppSign from './Components/Signup/AppSign';
-import Form from './Components/Signup/FormSign';
-import Formlog from './Components/Signup/Formlog';
 import Formlogin from "./Components/Signup/Formlogin";
-//import AppLog from "./Components/Signup/AppLog";
+import SignUp from './Components/Signup/FormSignup';
 import Task from "./Components/Task";
 import { createBootstrapComponent } from "react-bootstrap/esm/ThemeProvider";
 import {connect} from 'react-redux';
@@ -22,16 +19,13 @@ function App(props) {
 console.log(props.task)
 return (
     <div>
-      
       <Router basename="/protask">
         <Switch>
           <Route path="/protask/:username" component={Task}/>
-          <Route path="/login"><Formlog/></Route>
-          <Route path="/"><Form/></Route>
+          <Route path="/login"><Formlogin/></Route>
+          <Route path="/"><SignUp/></Route>
         </Switch>
       </Router>
-      
-      
     </div>
   );
 }
